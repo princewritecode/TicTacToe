@@ -1,0 +1,29 @@
+.card {
+  background-color: var(--yellow);
+  border: 1px solid #000;
+  border-radius: 10%;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  padding: 1rem;
+  display: flex;
+}
+
+.grid {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 500px;
+  height: 500px;
+  display: flex;
+}
+
+:root {
+  --yellow: #ffc107;
+}
+
+body {
+  background-color: #000;
+}
+/*# sourceMappingURL=index.c41b5a0e.css.map */
