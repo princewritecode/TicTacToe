@@ -27242,7 +27242,7 @@ var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _icon = require("../Icon/icon");
 var _iconDefault = parcelHelpers.interopDefault(_icon);
 var _cardCss = require("./Card.css");
-function Card({ player }) {
+function Card({ gameEnd, player, onPlay, index }) {
     let icon = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _iconDefault.default), {}, void 0, false, {
         fileName: "src/Components/Card/Card.js",
         lineNumber: 5,
@@ -27264,6 +27264,7 @@ function Card({ player }) {
     }, this);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         className: "card",
+        onClick: ()=>!gameEnd && player == "" && onPlay(index),
         children: icon
     }, void 0, false, {
         fileName: "src/Components/Card/Card.js",
@@ -56877,24 +56878,92 @@ var _react = require("react");
 var _card = require("../Card/Card");
 var _cardDefault = parcelHelpers.interopDefault(_card);
 var _gridCss = require("./Grid.css");
+var _checkWinner = require("../../helpers/checkWinner");
+var _checkWinnerDefault = parcelHelpers.interopDefault(_checkWinner);
 var _s = $RefreshSig$();
 function Grid({ noOfCards }) {
     _s();
     const [board, setBoard] = (0, _react.useState)(Array(noOfCards).fill(""));
+    const [winner, setWinner] = (0, _react.useState)(null);
+    const [turn, setTurn] = (0, _react.useState)(true);
+    function play(index) {
+        if (turn == true) board[index] = "O";
+        else board[index] = "X";
+        const isWin = (0, _checkWinnerDefault.default)(board, turn ? "O" : "X");
+        if (isWin) setWinner(isWin);
+        setBoard([
+            ...board
+        ]);
+        setTurn(!turn);
+    }
+    function reset() {
+        setTurn(true);
+        setWinner(null);
+        setBoard(Array(noOfCards).fill(""));
+    }
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        className: "grid",
-        children: board.map((el, idx)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _cardDefault.default), {}, idx, false, {
+        className: "grid-wrapper",
+        children: [
+            winner && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                        className: "turn-hightlight",
+                        children: [
+                            "Winner is ",
+                            winner
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/Components/Grid/Grid.js",
+                        lineNumber: 46,
+                        columnNumber: 25
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                        className: "reset",
+                        onClick: reset,
+                        children: "Reset Game"
+                    }, void 0, false, {
+                        fileName: "src/Components/Grid/Grid.js",
+                        lineNumber: 47,
+                        columnNumber: 25
+                    }, this)
+                ]
+            }, void 0, true),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+                className: "turn-hightlight",
+                children: [
+                    "Current Turn is",
+                    turn ? "O" : "X"
+                ]
+            }, void 0, true, {
                 fileName: "src/Components/Grid/Grid.js",
-                lineNumber: 12,
-                columnNumber: 37
-            }, this))
-    }, void 0, false, {
+                lineNumber: 52,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                className: "grid",
+                children: board.map((el, idx)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _cardDefault.default), {
+                        gameEnd: winner ? true : false,
+                        onPlay: play,
+                        player: el,
+                        index: idx
+                    }, idx, false, {
+                        fileName: "src/Components/Grid/Grid.js",
+                        lineNumber: 54,
+                        columnNumber: 41
+                    }, this))
+            }, void 0, false, {
+                fileName: "src/Components/Grid/Grid.js",
+                lineNumber: 53,
+                columnNumber: 13
+            }, this)
+        ]
+    }, void 0, true, {
         fileName: "src/Components/Grid/Grid.js",
-        lineNumber: 10,
+        lineNumber: 42,
         columnNumber: 9
     }, this);
 }
-_s(Grid, "dFDjpGOLWsIWuBWLRgzWBf1fXps=");
+_s(Grid, "kM62OZTdGasa7n9j9IjRcIgRVJQ=");
 _c = Grid;
 exports.default = Grid;
 var _c;
@@ -56905,6 +56974,22 @@ $RefreshReg$(_c, "Grid");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","../Card/Card":"fk1dI","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./Grid.css":"5gw6f"}],"5gw6f":[function() {},{}],"6n0o6":[function() {},{}]},["9wh9R","1xC6H","2kQhy"], "2kQhy", "parcelRequire94c2")
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","../Card/Card":"fk1dI","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./Grid.css":"5gw6f","../../helpers/checkWinner":"eY8SI"}],"5gw6f":[function() {},{}],"eY8SI":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+function isWinner(board, symbol) {
+    if (board[0] === board[1] && board[1] === board[2] && board[2] === symbol) return symbol;
+    if (board[3] === board[4] && board[4] === board[5] && board[5] === symbol) return symbol;
+    if (board[6] === board[7] && board[7] === board[8] && board[8] === symbol) return symbol;
+    if (board[0] === board[3] && board[3] === board[6] && board[6] === symbol) return symbol;
+    if (board[1] === board[4] && board[4] === board[7] && board[7] === symbol) return symbol;
+    if (board[2] === board[5] && board[5] === board[8] && board[8] === symbol) return symbol;
+    if (board[0] === board[4] && board[4] === board[8] && board[4] === symbol) return symbol;
+    if (board[2] === board[4] && board[4] === board[6] && board[4] === symbol) return symbol;
+    return "";
+}
+exports.default = isWinner;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6n0o6":[function() {},{}]},["9wh9R","1xC6H","2kQhy"], "2kQhy", "parcelRequire94c2")
 
 //# sourceMappingURL=index.7271efb6.js.map

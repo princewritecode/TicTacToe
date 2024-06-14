@@ -19,6 +19,10 @@
   display: flex;
 }
 
+.turn-hightlight {
+  color: #fff;
+}
+
 :root {
   --yellow: #ffc107;
 }
